@@ -1,20 +1,16 @@
 <template>
-  <div class="container">
-    <AppNavBar/>
-<!--    <div class="layout">-->
-<!--      <router-view />-->
-<!--      <CustomSlider v-if="state.isShowSlider"></CustomSlider>-->
-<!--    </div>-->
-<!--    <ArrowUp></ArrowUp>-->
-    <!-- <Footer v-if="isShowNav"></Footer> -->
+  <div class='container'>
+    <AppNavBar />
+    <div class='content'>
+    </div>
   </div>
 </template>
 
 <script>
-import AppNavBar from '@/components/AppNavBar'
+import AppNavBar from 'components/AppNavBar.vue'
 export default {
   name: "Home",
-  components: { AppNavBar },
+  components: { AppNavBar},
   data() {
     return {
       state: {
@@ -27,9 +23,24 @@ export default {
 
   },
   methods: {
+
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+
+.site-logo {
+  text-align: center;
+  color: #FFFFFF;
+
+  img {
+    width: 116px;
+    height: 38px;
+  }
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
 </style>

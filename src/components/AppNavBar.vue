@@ -4,53 +4,81 @@
       <div class='nav-mobile'>
         <div class='nav-mobile-logo'>
           <router-link to='/'>
-            <img class='logo' src='@/assets/logo.svg'/>
+            <img src='@/assets/logo-black-text.svg' alt='logo'/>
           </router-link>
         </div>
-        <div class='title'>{{title}}</div>
-        <div class='menu' @click='handleMenuClick'>
-          <i class='el-icon-menu'></i>
+        <div class='title'>{{ title }}</div>
+        <div class='nav-menu' @click='onMobileMenuTap'>
+          <img src='@/assets/icon_menu.svg'>
         </div>
       </div>
     </div>
     <div v-else class='nav'>
+      <div class='nav-content'>
+        <router-link to='/'>
+          <img src='@/assets/logo-black-text.svg' alt='logo'/>
+        </router-link>
+        <div class='content'>
+          <el-menu
+            :default-active="activeIndex"
+            class="nav-menu"
+            text-color='#222'
+            active-text-color='#0468d7'
+            :ellipsis="false"
+            mode="horizontal" @select='handleMenuSelect'>
+            <el-menu-item v-for='item in menuList' :key='item.index' :index='item.index'>{{item.name}}</el-menu-item>
+          </el-menu>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { Platform } from 'utils/platform.js'
 export default {
   name: 'AppNavBar',
-  data() {
+  data: function() {
     return {
       visible: false,
-      activeIndex: "0",
-      title: "",
+      activeIndex: '1',
+      title: '文章',
       menuList: [
         {
-          index: "1",
-          path: "articles",
-          name: "文章",
+          index: '1',
+          path: 'articles',
+          name: '文章'
         },
         {
-          index: "2",
-          path: "/game",
-          name: "游戏",
+          index: '2',
+          path: '/game',
+          name: '游戏'
         },
         {
-          index: "3",
-          path: "/about",
-          name: "关于",
-        },
+          index: '3',
+          path: '/about',
+          name: '关于'
+        }
       ],
       isShow: false,
-      isMobile: Platform.isMobile(),
+      isMobile: Platform.isMobile()
     }
   },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
   methods: {
-    handleMenuClick() {
+    onMobileMenuTap() {
 
-    }
+    },
+    handleMenuSelect(key) {
+      // this.activeIndex = index;
+      // this.$router.push({ path: this.menuList[index - 1].path });
+      console.log(key)
+    },
+    handleResize() {
+      this.isMobile = window.innerWidth <= 768;
+    },
   }
 }
 </script>
@@ -58,21 +86,34 @@ export default {
 <style scoped lang='less'>
 .nav-mobile {
   display: flex;
-  line-height: 60px;
+  flex-direction: row;
+  height: 60px;
+  align-items: center;
+
   .nav-mobile-logo {
-    flex: 1;
     text-align: center;
-    margin-left: 10px;
+    height: 30px;
+    img {
+      height: 30px;
+    }
   }
+
   .title {
-    flex: 3;
-    font-size: 24px;
-  }
-  .menu {
     flex: 1;
-    margin-right: 10px;
+    font-size: 24px;
+    color: #222222;
+    padding: 0 10px 0 10px;
+  }
+
+  .nav-menu {
     font-size: 34px;
-    color: #409eff;
+    color: #222222;
+    height: 34px;
+
+    img {
+      height: 30px;
+      color: #222222;
+    }
   }
 }
 
@@ -84,44 +125,60 @@ export default {
   width: 100%;
   border-bottom: 1px solid #eee;
   background-color: #fff;
+  padding: 0 30px 0 30px;
 
   .nav-content {
-    width: 1200px;
+    width: 100%;
     margin: 0 auto;
+    padding: 10px 0 10px 0;
+    display: flex;
+    flex-direction: row;
+
+    img {
+      height: 40px;
+    }
+    a:hover {
+      background: none !important;
+    }
+
+    .content {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-grow: 1;
+
+      .nav-menu {
+        font-weight: bold;
+        font-size: 20px;
+      }
+    }
   }
 
   .logo {
-    height: 50px;
-    border-radius: 50%;
-    margin: 5px 0 0;
+    height: 40px;
   }
 
   .el-menu.el-menu--horizontal {
     border-bottom: none;
   }
 
+
   .el-menu--horizontal > .el-menu-item {
-    cursor: pointer;
-    color: #333;
+    border-bottom: none;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
   }
 
-  .nav-right {
-    position: relative;
-    padding-top: 15px;
-    text-align: right;
+  //鼠标悬浮时，子菜单的样式
+  .el-menu-item:hover {
+    outline: 0 !important;
+    color: #0468d7 !important;
+    background: none !important;
+  }
 
-    .el-dropdown {
-      cursor: pointer;
-      padding-right: 60px;
-    }
-
-    .user-img {
-      position: absolute;
-      top: -15px;
-      right: 0;
-      width: 50px;
-      border-radius: 50%;
-    }
+  .el-menu-item.is-active {
+    background: none !important;
   }
 }
 </style>
